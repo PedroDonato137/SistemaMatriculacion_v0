@@ -1,6 +1,10 @@
 package org.iesalandalus.programacion.matriculacion.dominio;
 
+import com.sun.jdi.event.BreakpointEvent;
+
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,12 +27,13 @@ public class Alumno {
     private String nia;
 
     //Constructor
-    public Alumno() {
-        setNombre(this.nombre);
-        setDni(this.dni);
-        setCorreo(this.correo);
-        setTelefono(this.telefono);
-        setFechaNacimiento(LocalDate.now());
+    public Alumno(String nombre, String dni, String correo, String telefono, LocalDate fechaNacimiento) {
+        setNombre(nombre);
+        setDni(dni);
+        setCorreo(correo);
+        setTelefono(telefono);
+        setFechaNacimiento(fechaNacimiento);
+        setNia();
     }
 
     // Constructor Copia
@@ -38,6 +43,7 @@ public class Alumno {
         this.correo = alumno.correo;
         this.dni = alumno.dni;
         this.fechaNacimiento = alumno.fechaNacimiento;
+        this.nia = alumno.nia; // REVISAR ESTO
     }
 
     public String getNia() {
@@ -45,7 +51,22 @@ public class Alumno {
     }
 
     private void setNia() {
-        this.nia = nia;
+        String digitosNombre = "";
+        String digitosDni = "";
+        String niaFormado = "";
+        Pattern patron = Pattern.compile(ER_NIA);
+        Matcher Validacion;
+
+        digitosNombre = this.nombre.substring(0, 4);
+        digitosDni = this.dni.substring(5, 8);
+
+        niaFormado = digitosNombre.toLowerCase() + digitosDni;
+
+        Validacion = patron.matcher(niaFormado);
+
+        //if (Validacion.matches()) { // NO SE PUEDE HACER POR LOS ACENTOS
+            this.nia = niaFormado;
+        //}
     }
 
     private void setNia(String nia) {
@@ -57,11 +78,21 @@ public class Alumno {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+
+        this.nombre = formateaNombre(nombre); // Dar formato al nombre
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+
+        Pattern patron = Pattern.compile(ER_TELEFONO);
+        Matcher Validacion;
+        Validacion = patron.matcher(telefono);
+
+        if(Validacion.matches()) {
+            this.telefono = telefono;
+        }else{
+            // FALTA EXCEPCION
+        }
     }
 
     public String getTelefono() {
@@ -69,7 +100,16 @@ public class Alumno {
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+
+        Pattern patron = Pattern.compile(ER_CORREO);
+        Matcher Validacion;
+        Validacion = patron.matcher(correo);
+
+        if(Validacion.matches()) {
+            this.correo = correo;
+        }else{
+            // FALTA EXCEPCION
+        }
     }
 
     public String getCorreo() {
@@ -77,7 +117,12 @@ public class Alumno {
     }
 
     public void setDni(String dni) {
-        this.dni = dni;
+
+        if(comprobarLetraDni(dni)) {
+            this.dni = dni;
+        }else{
+            // LANZAR EXCEPCION
+        }
     }
 
     public String getDni() {
@@ -85,7 +130,11 @@ public class Alumno {
     }
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(FORMATO_FECHA);
+        String fechaFormateada = fechaNacimiento.format(formatoFecha);
+
+        this.fechaNacimiento = LocalDate.parse(fechaFormateada);
     }
 
     public LocalDate getFechaNacimiento() {
@@ -135,7 +184,7 @@ public class Alumno {
         Validacion = patron.matcher(dniValidar); // Compruebo que el DNI a validar sea correcto con el patron
 
         if(Validacion.matches()){ // Si es correcto
-            int numerodni = Integer.parseInt(dniValidar.substring(0, 7)); // Separo la parte numérica
+            int numerodni = Integer.parseInt(dniValidar.substring(0, 8)); // Separo la parte numérica
             int modulo = numerodni % 23; // Saco el resto de dividerlo entre 23
             char letra = letrasDni.charAt(modulo); // Saco la letra que tendria que tener ese valor numérico
 
@@ -149,4 +198,21 @@ public class Alumno {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Alumno alumno = (Alumno) o;
+        return Objects.equals(nombre, alumno.nombre) && Objects.equals(telefono, alumno.telefono) && Objects.equals(correo, alumno.correo) && Objects.equals(dni, alumno.dni) && Objects.equals(fechaNacimiento, alumno.fechaNacimiento) && Objects.equals(nia, alumno.nia);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre, telefono, correo, dni, fechaNacimiento, nia);
+    }
+
+    @Override
+    public String toString() {
+
+        return "Número de Identificación del Alumnado (NIA)=" + nia +  " nombre=" + nombre + " (" + getIniciales() + "), DNI=" + dni + ", correo=" + correo +", teléfono=" + telefono + ", fecha nacimiento=" + fechaNacimiento;
+    }
 }
