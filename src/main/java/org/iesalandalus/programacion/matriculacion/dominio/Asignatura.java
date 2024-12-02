@@ -8,7 +8,7 @@ public class Asignatura {
     // Constantes de la Clase
     public static final int MAX_NUM_HORAS_ANUALES = 300;
     public static final int MAX_NUM_HORAS_DESDOBLES = 6;
-    private static final String ER_CODIGO = "a";
+    private static final String ER_CODIGO = "none";
 
     // Atributos con visibilidad adecuada
     private String codigo;
@@ -34,7 +34,6 @@ public class Asignatura {
 
     // Constructor Copia
     public Asignatura(Asignatura asignatura){
-        //this.nombre = alumno.nombre;
         this.codigo = asignatura.codigo;
         this.nombre = asignatura.nombre;
         this.horasAnuales = asignatura.horasAnuales;

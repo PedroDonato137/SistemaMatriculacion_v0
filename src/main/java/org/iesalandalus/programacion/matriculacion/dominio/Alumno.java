@@ -4,6 +4,7 @@ import com.sun.jdi.event.BreakpointEvent;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,11 +65,7 @@ public class Alumno {
 
         Validacion = patron.matcher(niaFormado);
 
-        if (Validacion.matches()) { // NO SE PUEDE HACER POR LOS ACENTOS
             this.nia = niaFormado;
-        }else{
-            // Falta excepcion
-        }
     }
 
     private void setNia(String nia) {
@@ -80,21 +77,21 @@ public class Alumno {
     }
 
     public void setNombre(String nombre) {
-
+        if (nombre == null) {
+            throw new NullPointerException("ERROR: El nombre de un alumno no puede ser nulo.");
+        }
+        if (nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El nombre del alumno no puede estar vacío.");
+        }
         this.nombre = formateaNombre(nombre); // Dar formato al nombre
     }
 
     public void setTelefono(String telefono) {
 
-        Pattern patron = Pattern.compile(ER_TELEFONO);
-        Matcher Validacion;
-        Validacion = patron.matcher(telefono);
-
-        if(Validacion.matches()) {
-            this.telefono = telefono;
-        }else{
-            // FALTA EXCEPCION
+        if (telefono != null && !telefono.matches(ER_TELEFONO)) {
+            throw new IllegalArgumentException("ERROR: El teléfono del alumno no es válido.");
         }
+        this.telefono = telefono;
     }
 
     public String getTelefono() {
@@ -102,16 +99,14 @@ public class Alumno {
     }
 
     public void setCorreo(String correo) {
-
-        Pattern patron = Pattern.compile(ER_CORREO);
-        Matcher Validacion;
-        Validacion = patron.matcher(correo);
-
-        if(Validacion.matches()) {
-            this.correo = correo;
-        }else{
-            // FALTA EXCEPCION
+        if (correo == null) {
+            throw new NullPointerException("ERROR: El correo de un alumno no puede ser nulo.");
         }
+        if (!correo.matches(ER_CORREO)) {
+            throw new IllegalArgumentException("ERROR: El correo del alumno no tiene un formato válido.");
+        }
+
+        this.correo = correo;
     }
 
     public String getCorreo() {
@@ -133,10 +128,13 @@ public class Alumno {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
 
+        if (fechaNacimiento == null) {
+            throw new IllegalArgumentException("La matricula no puede ser null");
+        }
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(FORMATO_FECHA);
-        String fechaFormateada = fechaNacimiento.format(formatoFecha);
+        LocalDate fechaFormateada = LocalDate.parse(fechaNacimiento.format(formatoFecha), formatoFecha);
 
-        this.fechaNacimiento = LocalDate.parse(fechaFormateada);
+        this.fechaNacimiento = fechaFormateada;
     }
 
     public LocalDate getFechaNacimiento() {

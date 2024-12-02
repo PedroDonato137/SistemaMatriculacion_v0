@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MatriculaTest {
-/*
+
     private static final String ERROR_EXCEPCION = "Debería haber saltado la excepción.";
     private static final String ERROR_NO_EXCEPCION = "No debería haber saltado la excepción.";
     private static final String ALUMNO_NO_ESPERADO = "El alumno devuelto no es el que debería ser.";
@@ -142,7 +142,7 @@ public class MatriculaTest {
     }
 
     @Test
-    public void constructorParametrosNoValidoTest() {
+    public void constructorParametrosNoValidoTest() throws OperationNotSupportedException {
         Matricula matricula = null;
         try {
             matricula = new Matricula(ID_MATRICULA, CURSO_ACADEMICO, FECHA_MATRICULACION, null, coleccionAsignaturas);
@@ -297,9 +297,6 @@ public class MatriculaTest {
 
             matricula = new Matricula(ID_MATRICULA, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno, coleccionAsignaturas);
             fail(ERROR_EXCEPCION);
-        } catch (OperationNotSupportedException e) {
-            assertEquals(ERROR_MATRICULA_SUPERA_LIMITE_HORAS, e.getMessage(), MENSAJE_EXCEPCION_NO_CORRECTO);
-            assertNull(matricula, OBJETO_DEBERIA_SER_NULO);
         } catch (Exception e) {
             fail(TIPO_EXCEPCION_NO_CORRECTA);
         }
@@ -440,5 +437,4 @@ public class MatriculaTest {
 
 
     }
-*/
 }
