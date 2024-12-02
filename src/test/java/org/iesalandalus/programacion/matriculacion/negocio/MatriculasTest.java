@@ -1,6 +1,6 @@
 package org.iesalandalus.programacion.matriculacion.negocio;
 
-/*
+
 import org.iesalandalus.programacion.matriculacion.MainApp;
 import org.iesalandalus.programacion.matriculacion.dominio.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,10 +11,10 @@ import javax.naming.OperationNotSupportedException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
-*/
+
 
 public class MatriculasTest {
-/*
+
     private static final String ERROR_NO_EXCEPCION = "No debería haber saltado la excepción.";
     private static final String ERROR_CAPACIDAD_NO_CORRECTA = "ERROR: La capacidad debe ser mayor que cero.";
     private static final String ERROR_INSERTAR_MATRICULA_NULA = "ERROR: No se puede insertar una matrícula nula.";
@@ -99,7 +99,7 @@ public class MatriculasTest {
     private static Asignatura[] coleccionAsignaturas;
 
     @BeforeAll
-    public static void asignarValoresAtributos() {
+    public static void asignarValoresAtributos() throws OperationNotSupportedException {
         cf1 =new CicloFormativo(CODIGO_CF_1, FAMILIA_PROFESIONAL_CF, GRADO_CF, NOMBRE_CICLO_FORMATIVO, HORAS_CICLO_FORMATIVO);
         cf2 = new CicloFormativo(CODIGO_CF_2, FAMILIA_PROFESIONAL_CF, GRADO_CF, NOMBRE_CICLO_FORMATIVO_2, HORAS_CICLO_FORMATIVO);
         cf3 = new CicloFormativo(CODIGO_CF_3, FAMILIA_PROFESIONAL_CF, GRADO_CF, NOMBRE_CICLO_FORMATIVO_3, HORAS_CICLO_FORMATIVO);
@@ -117,17 +117,10 @@ public class MatriculasTest {
         coleccionAsignaturas[1]=asignatura2;
         coleccionAsignaturas[2]=asignatura3;
 
-        try
-        {
-            matricula1 = new Matricula(ID_MATRICULA, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno1, coleccionAsignaturas);
-            matricula2 = new Matricula(ID_MATRICULA_2, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno2, coleccionAsignaturas);
-            matricula3 = new Matricula(ID_MATRICULA_3, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno3, coleccionAsignaturas);
-            matriculaRepetida1 =new Matricula(ID_MATRICULA, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno1, coleccionAsignaturas);
-        }
-        catch (OperationNotSupportedException e)
-        {
-            fail(ERROR_NO_EXCEPCION);
-        }
+        matricula1 = new Matricula(ID_MATRICULA, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno1, coleccionAsignaturas);
+        matricula2 = new Matricula(ID_MATRICULA_2, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno2, coleccionAsignaturas);
+        matricula3 = new Matricula(ID_MATRICULA_3, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno3, coleccionAsignaturas);
+        matriculaRepetida1 =new Matricula(ID_MATRICULA, CURSO_ACADEMICO, FECHA_MATRICULACION, alumno1, coleccionAsignaturas);
 
     }
 
@@ -292,7 +285,7 @@ public class MatriculasTest {
     }
 
     @Test
-    public void insertarMatriculaValidaConMatriculasLlenoLanzaExcepcion() {
+    public void insertarMatriculaValidaConMatriculasLlenoLanzaExcepcion() throws OperationNotSupportedException {
         Matriculas matriculas = new Matriculas(2);
 
         try {
@@ -305,15 +298,7 @@ public class MatriculasTest {
             assertEquals(2, matriculas.getTamano(), TAMANO_NO_ESPERADO);
             assertEquals(matricula1, matriculas.buscar(matricula1), MATRICULA_NO_ESPERADA);
             assertNotSame(matricula1, matriculas.buscar(matricula1), REFERENCIA_NO_ESPERADA);
-            try
-            {
-                assertEquals(matricula1, matriculas.get()[0], OPERACION_NO_REALIZADA);
-
-            }
-            catch (OperationNotSupportedException e1)
-            {
-                System.out.println(e1.getMessage());
-            }
+            assertEquals(matricula1, matriculas.get()[0], OPERACION_NO_REALIZADA);
 
             assertEquals(matricula2, matriculas.buscar(matricula2), MATRICULA_NO_ESPERADA);
             assertNotSame(matricula2, matriculas.buscar(matricula2), REFERENCIA_NO_ESPERADA);
@@ -462,5 +447,4 @@ public class MatriculasTest {
     }
 
 
-*/
 }
