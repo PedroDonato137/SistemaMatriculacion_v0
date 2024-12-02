@@ -21,7 +21,7 @@ public class Matricula {
     private LocalDate fechaMatriculacion;
     private LocalDate fechaAnulacion;
     private Alumno alumno;
-    private Asignatura[] coleccionAsignaturas;
+    private Asignatura[] coleccionAsignaturas =new Asignatura[MAXIMO_NUMERO_ASIGNATURAS_POR_MATRICULA]; // El número máximo de asignaturas de una matrícula son 10.
 
     //Constructor
     public Matricula(int idMatricula, String cursoAcademico, LocalDate fechaMatriculacion, Alumno alumno, Asignatura[] coleccionAsignaturas) {
