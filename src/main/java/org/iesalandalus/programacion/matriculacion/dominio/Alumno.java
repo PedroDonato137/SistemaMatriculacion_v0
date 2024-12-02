@@ -18,7 +18,7 @@ public class Alumno {
     public static final String FORMATO_FECHA = "dd/MM/yyyy";
     private static final int MIN_EDAD_ALUMNADO = 16; // Edad mínima
 
-    // Varribles de la clase
+    // Atributos de la clase
     private String  nombre;
     private String  telefono;
     private String  correo;
@@ -64,9 +64,11 @@ public class Alumno {
 
         Validacion = patron.matcher(niaFormado);
 
-        //if (Validacion.matches()) { // NO SE PUEDE HACER POR LOS ACENTOS
+        if (Validacion.matches()) { // NO SE PUEDE HACER POR LOS ACENTOS
             this.nia = niaFormado;
-        //}
+        }else{
+            // Falta excepcion
+        }
     }
 
     private void setNia(String nia) {

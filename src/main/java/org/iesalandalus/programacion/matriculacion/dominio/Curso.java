@@ -10,12 +10,8 @@ public enum Curso {
         this.cadenaAMostrar = cadenaAMostrar;
     }
 
-    public static String imprimir(){
-        String cadena = "";
-
-
-
-        return "";
+    public String imprimir(){
+        return this.ordinal() + ".-" + cadenaAMostrar;
     }
 
     @Override
