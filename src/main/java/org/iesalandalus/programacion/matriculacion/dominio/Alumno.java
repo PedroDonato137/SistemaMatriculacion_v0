@@ -88,7 +88,7 @@ public class Alumno {
 
     public void setTelefono(String telefono) {
 
-        if (telefono != null && !telefono.matches(ER_TELEFONO)) {
+        if (telefono == null || !telefono.matches(ER_TELEFONO)) {
             throw new IllegalArgumentException("ERROR: El teléfono del alumno no es válido.");
         }
         this.telefono = telefono;
@@ -115,10 +115,10 @@ public class Alumno {
 
     public void setDni(String dni) {
 
-        if(comprobarLetraDni(dni)) {
-            this.dni = dni;
+        if(!comprobarLetraDni(dni)) {
+            throw new IllegalArgumentException("El DNI no es válido.");
         }else{
-            // LANZAR EXCEPCION
+            this.dni = dni;
         }
     }
 
@@ -128,11 +128,15 @@ public class Alumno {
 
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
 
-        if (fechaNacimiento == null) {
-            throw new IllegalArgumentException("La matricula no puede ser null");
+        LocalDate fechaFormateada;
+        int comprobarEdad = LocalDate.now().getYear() - fechaNacimiento.getYear();
+
+        if (fechaNacimiento == null || comprobarEdad < MIN_EDAD_ALUMNADO) {
+            throw new IllegalArgumentException("El alumno debe tener al menos 16 años.");
         }
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(FORMATO_FECHA);
-        LocalDate fechaFormateada = LocalDate.parse(fechaNacimiento.format(formatoFecha), formatoFecha);
+
+        fechaFormateada = LocalDate.parse(fechaNacimiento.format(formatoFecha), formatoFecha);
 
         this.fechaNacimiento = fechaFormateada;
     }
