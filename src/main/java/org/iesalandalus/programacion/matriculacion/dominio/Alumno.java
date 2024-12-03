@@ -131,7 +131,11 @@ public class Alumno {
         LocalDate fechaFormateada;
         int comprobarEdad = LocalDate.now().getYear() - fechaNacimiento.getYear();
 
-        if (fechaNacimiento == null || comprobarEdad < MIN_EDAD_ALUMNADO) {
+        if (fechaNacimiento == null){
+            throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
+        }
+
+        if (comprobarEdad < MIN_EDAD_ALUMNADO) {
             throw new IllegalArgumentException("El alumno debe tener al menos 16 años.");
         }
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(FORMATO_FECHA);

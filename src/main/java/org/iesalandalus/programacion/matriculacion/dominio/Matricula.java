@@ -84,12 +84,19 @@ public class Matricula {
 
     public void setFechaMatriculacion(LocalDate fechaMatriculacion) {
 
-        if (fechaMatriculacion == null || ChronoUnit.DAYS.between(fechaMatriculacion, LocalDate.now()) > MAXIMO_DIAS_ANTERIOR_MATRICULA) {
+        LocalDate fechaFormateada;
+
+        if (fechaMatriculacion == null) {
+            throw new IllegalArgumentException("La fecha de matriculación no puede ser nula.");
+        }
+
+        long diasDeRetraso = ChronoUnit.DAYS.between(fechaMatriculacion, LocalDate.now());
+        if (diasDeRetraso < 0 || diasDeRetraso > MAXIMO_DIAS_ANTERIOR_MATRICULA) {
             throw new IllegalArgumentException("La matrícula no puede tener más de " + MAXIMO_DIAS_ANTERIOR_MATRICULA + " días de retraso.");
         }
 
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(FORMATO_FECHA);
-        LocalDate fechaFormateada = LocalDate.parse(fechaMatriculacion.format(formatoFecha), formatoFecha);
+        fechaFormateada = LocalDate.parse(fechaMatriculacion.format(formatoFecha), formatoFecha);
 
         this.fechaMatriculacion = fechaFormateada;
     }
