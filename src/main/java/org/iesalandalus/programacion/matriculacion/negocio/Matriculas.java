@@ -1,6 +1,7 @@
 package org.iesalandalus.programacion.matriculacion.negocio;
 
 import org.iesalandalus.programacion.matriculacion.dominio.Alumno;
+import org.iesalandalus.programacion.matriculacion.dominio.Asignatura;
 import org.iesalandalus.programacion.matriculacion.dominio.CicloFormativo;
 import org.iesalandalus.programacion.matriculacion.dominio.Matricula;
 import javax.naming.OperationNotSupportedException;
@@ -57,20 +58,22 @@ public class Matriculas {
     }
 
     public Matricula[] get(CicloFormativo cicloFormativo) {
-        if (cicloFormativo == null) {
-            throw new NullPointerException("ERROR: No se pueden buscar un curso nulo.");
-        }
-        Matricula[] cicloPermanencia = new Matricula[capacidad];
-        int indice = 0;
-        /* // PA PAÑANA
-        for(int i; i < cicloFormativo.getCodigo())
-        for (Matricula matricula : coleccionMatriculas) {
-            if (matricula != null && matricula.) {
-                cicloPermanencia[indice++] = new Matricula(matricula);
-            }
-        }*/
+        Matricula[] matriculasConCiclo = new Matricula[tamano]; // Array a devolver
+        int contadorMatriculas = 0;
 
-        return cicloPermanencia;
+        for (int i = 0; i < coleccionMatriculas.length; i++) { // For para sacar las asignaturas
+            Asignatura[] asignaturasMatricula = new Asignatura[10]; // Creo un array temporal por cada matricula sacar las asignaturas
+            Matricula matricula = coleccionMatriculas[i]; // consigo solo una matricula
+            asignaturasMatricula = matricula.getColeccionAsignaturas(); // Saco las asignaturas de esa matricula
+            for (int j = 0; j < asignaturasMatricula.length; j++) { // Este for es para recorrer las asignaturas
+                if (asignaturasMatricula[j].getCicloFormativo().equals(cicloFormativo)) { // comparar el ciclo formativo de cada asignatura con el pasado por parametro
+                    matriculasConCiclo[contadorMatriculas] = coleccionMatriculas[i]; // si coincide lo mete en un array independiente
+                    contadorMatriculas++;
+                }
+            }
+        }
+
+        return matriculasConCiclo;
     }
 
     public int getCapacidad() {

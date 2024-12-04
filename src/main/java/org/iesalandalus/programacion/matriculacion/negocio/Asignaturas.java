@@ -89,10 +89,10 @@ public class Asignaturas {
 
     private void desplazarUnaPosicionHaciaIzquierda(int indice) {
         int i;
-        for (i = indice; !tamanoSuperado(i); i++) {
-            coleccionAsignaturas[i] = coleccionAsignaturas[i+1];
+        for (i = indice; i < tamano - 1; i++) {
+            coleccionAsignaturas[i] = coleccionAsignaturas[i + 1];
         }
-        coleccionAsignaturas[i] = null;
+        coleccionAsignaturas[tamano - 1] = null;
         tamano--;
     }
 

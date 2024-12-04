@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 public class Alumno {
 
     // Constantes de la Clase
-    private static final String ER_TELEFONO = "^(\\+34|0034|34)?[6789]\\d{8}$";
-    private static final String ER_CORREO = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    private static final String ER_TELEFONO = "[96]\\d{8}";
+    private static final String ER_CORREO = ".+@[a-zA-Z]+\\.[a-zA-Z]+";
     private static final String ER_DNI = "^(\\d{8})([A-HJ-NP-TV-Z])$";
     private static final String ER_NIA = "^[a-z]{4}\\d{3}$";
     public static final String FORMATO_FECHA = "dd/MM/yyyy";
@@ -39,6 +39,10 @@ public class Alumno {
 
     // Constructor Copia
     public Alumno(Alumno alumno){
+
+        if (alumno == null) {
+            throw new NullPointerException("ERROR: No es posible copiar un alumno nulo.");
+        }
         this.nombre = alumno.nombre;
         this.telefono = alumno.telefono;
         this.correo = alumno.correo;
@@ -81,16 +85,25 @@ public class Alumno {
             throw new NullPointerException("ERROR: El nombre de un alumno no puede ser nulo.");
         }
         if (nombre.trim().isEmpty()) {
-            throw new IllegalArgumentException("ERROR: El nombre del alumno no puede estar vacío.");
+            throw new IllegalArgumentException("ERROR: El nombre de un alumno no puede estar vacío.");
         }
         this.nombre = formateaNombre(nombre); // Dar formato al nombre
     }
 
     public void setTelefono(String telefono) {
 
-        if (telefono == null || !telefono.matches(ER_TELEFONO)) {
-            throw new IllegalArgumentException("ERROR: El teléfono del alumno no es válido.");
+        if (telefono == null) {
+            throw new NullPointerException("ERROR: El teléfono de un alumno no puede ser nulo.");
         }
+
+        if (!telefono.matches(ER_TELEFONO)) {
+            throw new IllegalArgumentException("ERROR: El teléfono del alumno no tiene un formato válido.");
+        }
+
+        if (telefono.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El teléfono del alumno no tiene un formato válido.");
+        }
+
         this.telefono = telefono;
     }
 
@@ -102,6 +115,11 @@ public class Alumno {
         if (correo == null) {
             throw new NullPointerException("ERROR: El correo de un alumno no puede ser nulo.");
         }
+
+        if (correo.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El correo del alumno no tiene un formato válido.");
+        }
+
         if (!correo.matches(ER_CORREO)) {
             throw new IllegalArgumentException("ERROR: El correo del alumno no tiene un formato válido.");
         }
@@ -113,10 +131,17 @@ public class Alumno {
         return correo;
     }
 
-    public void setDni(String dni) {
+    private void setDni(String dni) {
+        if (dni == null) {
+            throw new NullPointerException("ERROR: El dni de un alumno no puede ser nulo.");
+        }
+
+        if (dni.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
+        }
 
         if(!comprobarLetraDni(dni)) {
-            throw new IllegalArgumentException("El DNI no es válido.");
+            throw new IllegalArgumentException("ERROR: El dni del alumno no tiene un formato válido.");
         }else{
             this.dni = dni;
         }
@@ -126,17 +151,17 @@ public class Alumno {
         return dni;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+    private void setFechaNacimiento(LocalDate fechaNacimiento) {
+
+        if (fechaNacimiento == null) {
+            throw new NullPointerException("ERROR: La fecha de nacimiento de un alumno no puede ser nula.");
+        }
 
         LocalDate fechaFormateada;
         int comprobarEdad = LocalDate.now().getYear() - fechaNacimiento.getYear();
 
-        if (fechaNacimiento == null){
-            throw new IllegalArgumentException("La fecha de nacimiento no puede ser nula");
-        }
-
         if (comprobarEdad < MIN_EDAD_ALUMNADO) {
-            throw new IllegalArgumentException("El alumno debe tener al menos 16 años.");
+            throw new IllegalArgumentException("ERROR: La edad del alumno debe ser mayor o igual a 16 años.");
         }
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern(FORMATO_FECHA);
 
@@ -151,7 +176,7 @@ public class Alumno {
 
 
     // Metodos
-    public String formateaNombre( String nombreCompleto){
+    private String formateaNombre( String nombreCompleto){
         String nombreFor = "";
         String[] nombreSin = nombreCompleto.split(" ");
 
@@ -172,7 +197,7 @@ public class Alumno {
         return nombreFor;
     }
 
-    public String getIniciales(){
+    private String getIniciales(){
         String inicialesNombre = "";
         String[] iniciales = getNombre().split(" ");
 
@@ -199,7 +224,7 @@ public class Alumno {
             if(letra == dniValidar.charAt(8)){ // Si coincide con la letra del DNI a validar devuelve verdadero
                 return true;
             }else{
-                return false;
+                throw new IllegalArgumentException("ERROR: La letra del dni del alumno no es correcta.");
             }
         }else{ // Si no sigue el patron devulve falso de todos modos
             return false;
@@ -220,10 +245,10 @@ public class Alumno {
 
     @Override
     public String toString() {
-        return "Número de Identificación del Alumnado (NIA)=" + nia +  " nombre=" + nombre + " (" + getIniciales() + "), DNI=" + dni + ", correo=" + correo +", teléfono=" + telefono + ", fecha nacimiento=" + fechaNacimiento;
+        return "Número de Identificación del Alumnado (NIA)=" + nia +  " nombre=" + nombre + " (" + getIniciales() + "), DNI=" + dni + ", correo=" + correo +", teléfono=" + telefono + ", fecha nacimiento=" + fechaNacimiento.format(DateTimeFormatter.ofPattern(FORMATO_FECHA));
     }
 
     public String imprimir() {
-        return "Número de Identificación del Alumnado (NIA)=" + nia +  " nombre=" + nombre + " (" + getIniciales() + "), DNI=" + dni + ", correo=" + correo +", teléfono=" + telefono + ", fecha nacimiento=" + fechaNacimiento;
+        return "Número de Identificación del Alumnado (NIA)=" + nia +  " nombre=" + nombre + " (" + getIniciales() + "), DNI=" + dni + ", correo=" + correo +", teléfono=" + telefono + ", fecha nacimiento=" + fechaNacimiento.format(DateTimeFormatter.ofPattern(FORMATO_FECHA));
     }
 }

@@ -30,8 +30,6 @@ public class Asignatura {
         setCicloFormativo(cicloFormativo);
     }
 
-
-
     // Constructor Copia
     public Asignatura(Asignatura asignatura){
         this.codigo = asignatura.codigo;
@@ -47,7 +45,7 @@ public class Asignatura {
         return codigo;
     }
 
-    public void setCodigo(String codigo) {
+    private void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 

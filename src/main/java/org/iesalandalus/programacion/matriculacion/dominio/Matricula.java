@@ -112,7 +112,7 @@ public class Matricula {
         this.fechaAnulacion = fechaAnulacion;
     }
 
-    public String asignaturasMatricula() {
+    private String asignaturasMatricula() {
         StringBuilder sb = new StringBuilder();
         for (Asignatura asignatura : coleccionAsignaturas) {
             sb.append(asignatura.imprimir()).append("\n");
@@ -120,18 +120,17 @@ public class Matricula {
         return sb.toString().trim();
     }
 
-    public boolean superaMaximoNumeroHorasMatricula() {
+    private boolean superaMaximoNumeroHorasMatricula() {
         int totalHoras = Arrays.stream(coleccionAsignaturas).mapToInt(Asignatura::getHorasAnuales).sum();
         return totalHoras > MAXIMO_NUMERO_HORAS_MATRICULA;
     }
 
     public String imprimir() {
-        //idMatricula=100, curso académico=24-25, fecha matriculación=29/11/2024, alumno={Número de Identificación del Alumnado (NIA)=null nombre=José Ramón Jiménez Reyes (JRJR), DNI=11223344B, correo=joseramon.jimenez@iesalandalus.org, teléfono=950112233, fecha nacimiento=2002-09-15}
-        return "idMatricula=" + idMatricula + ", curso académico=" + cursoAcademico + ", fecha matriculación=" + fechaMatriculacion + ", alumno=" + getAlumno();
+        return "idMatricula=" + idMatricula + ", curso académico=" + cursoAcademico + ", fecha matriculación=" + fechaMatriculacion.format(DateTimeFormatter.ofPattern(FORMATO_FECHA)) + ", alumno=" + getAlumno();
     }
 
     @Override
     public String toString() {
-        return "Matricula{" + "idMatricula=" + idMatricula + ", cursoAcademico='" + cursoAcademico + '\'' + ", fechaMatriculacion=" + fechaMatriculacion + ", fechaAnulacion=" + fechaAnulacion + ", alumno=" + alumno + ", coleccionAsignaturas=" + Arrays.toString(coleccionAsignaturas) + '}';
+        return "Matricula{" + "idMatricula=" + idMatricula + ", cursoAcademico='" + cursoAcademico +  ", fechaMatriculacion=" + fechaMatriculacion.format(DateTimeFormatter.ofPattern(FORMATO_FECHA)) + ", fechaAnulacion=" + fechaAnulacion + ", alumno=" + alumno + ", coleccionAsignaturas=" + Arrays.toString(coleccionAsignaturas) + '}';
     }
 }

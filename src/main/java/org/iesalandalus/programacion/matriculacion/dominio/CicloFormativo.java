@@ -26,6 +26,11 @@ public class CicloFormativo {
     }
 
     public CicloFormativo(CicloFormativo cicloFormativo) {
+
+        if (cicloFormativo == null) {
+            throw new NullPointerException("ERROR: No es posible copiar un ciclo formativo nulo.");
+        }
+
         this.codigo = cicloFormativo.codigo;
         this.familiaProfesional = cicloFormativo.familiaProfesional;
         this.grado = cicloFormativo.grado;
@@ -37,7 +42,7 @@ public class CicloFormativo {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    private void setCodigo(int codigo) {
         if (codigo < 1000 || codigo > 9999) {
             throw new IllegalArgumentException("El codigo debe ser un número de cuatro dígitos.");
         }
@@ -46,10 +51,18 @@ public class CicloFormativo {
     }
 
     public String getFamiliaProfesional() {
+
         return familiaProfesional;
     }
 
     public void setFamiliaProfesional(String familiaProfesional) {
+        if (familiaProfesional == null) {
+            throw new NullPointerException("ERROR: La familia profesional de un ciclo formativo no puede ser nula.");
+        }
+
+        if (familiaProfesional.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: La familia profesional no puede estar vacía.");
+        }
         this.familiaProfesional = familiaProfesional;
     }
 
@@ -58,6 +71,9 @@ public class CicloFormativo {
     }
 
     public void setGrado(Grado grado) {
+        if (grado == null) {
+            throw new NullPointerException("ERROR: El grado de un ciclo formativo no puede ser nulo.");
+        }
         this.grado = grado;
     }
 
@@ -66,6 +82,12 @@ public class CicloFormativo {
     }
 
     public void setNombre(String nombre) {
+        if (nombre == null) {
+            throw new NullPointerException("ERROR: El nombre de un ciclo formativo no puede ser nulo.");
+        }
+        if (nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El nombre de un ciclo formativo no puede estar vacío.");
+        }
         this.nombre = nombre;
     }
 
@@ -74,8 +96,8 @@ public class CicloFormativo {
     }
 
     public void setHoras(int horas) {
-        if (horas < 0 || horas > MAXIMO_NUMERO_HORAS) {
-            throw new IllegalArgumentException("El número de horas debe estar entre 0 y " + MAXIMO_NUMERO_HORAS);
+        if (horas <= 0 || horas > MAXIMO_NUMERO_HORAS) {
+            throw new IllegalArgumentException("ERROR: El número de horas de un ciclo formativo no puede ser menor o igual a 0 ni mayor a 2000.");
         }
 
         this.horas = horas;
